@@ -1,0 +1,82 @@
+CREATE  DATABASE 'C:\elmart.fdb' user 'SYSDBA' password '1111' DEFAULT CHARACTER SET WIN1251;
+CREATE TABLE CATEGORY(
+    category_id			INTEGER				NOT NULL,
+    name				VARCHAR(256)		NOT NULL,
+    CONSTRAINT PK_CATEGORY PRIMARY KEY (category_id)
+);
+CREATE TABLE TYPE(
+    type_id				INTEGER				NOT NULL,
+    category_id			INTEGER				NOT NULL    REFERENCES CATEGORY,
+    name				VARCHAR(256)		NOT NULL,
+    CONSTRAINT PK_TYPE PRIMARY KEY (type_id)
+);
+CREATE TABLE PROPERTY(
+    property_id			INTEGER 			NOT NULL,
+    name				VARCHAR(256)		NOT NULL,
+    description			VARCHAR(256)    	NOT NULL,
+    CONSTRAINT PK_PROPERTY PRIMARY KEY (property_id)
+);
+CREATE TABLE MANUFACTURER(
+    manufacturer_id		INTEGER				NOT NULL,
+    name				VARCHAR(256)		NOT NULL,
+    country				VARCHAR(256)		NOT NULL,
+    CONSTRAINT PK_MANUFACTURER PRIMARY KEY (manufacturer_id)
+);
+CREATE TABLE PRODUCT(
+    product_id			INTEGER				NOT NULL,
+    type_id				INTEGER				NOT NULL    REFERENCES TYPE,
+    manufacturer_id		INTEGER				NOT NULL    REFERENCES MANUFACTURER,
+    name				VARCHAR(256)		NOT NULL,
+    description			VARCHAR(256)		NOT NULL,
+    price				FLOAT				NOT NULL,
+    CONSTRAINT PK_PRODUCT PRIMARY KEY (product_id)
+);
+CREATE TABLE PROPERTIES(
+    product_id			INTEGER				NOT NULL    REFERENCES PRODUCT,
+    property_id			INTEGER				NOT NULL    REFERENCES PROPERTY
+);
+CREATE TABLE MY_USER(
+    user_id				INTEGER				NOT NULL,
+    name				VARCHAR(256)		NOT NULL,
+    surname				VARCHAR(256)		NOT NULL,
+    oldname				VARCHAR(256)		NOT NULL,
+    reg_date			DATE				NOT NULL,
+    CONSTRAINT PK_MY_USER PRIMARY KEY (user_id)
+);
+CREATE TABLE REVIEW(
+    product_id			INTEGER				NOT NULL REFERENCES PRODUCT,
+    user_id				INTEGER				NOT NULL REFERENCES MY_USER,
+    rating				INTEGER				NOT NULL,
+    description			VARCHAR(256)		NOT NULL
+);
+CREATE TABLE SELLS(
+    sell_id				INTEGER				NOT NULL,
+    user_id				INTEGER				NOT NULL REFERENCES MY_USER,
+    sell_date			DATE				NOT NULL,
+    CONSTRAINT PK_SELLS PRIMARY KEY (sell_id)
+);
+CREATE TABLE STORAGE(
+    storage_id			INTEGER				NOT NULL,
+    address				VARCHAR(256)		NOT NULL,
+    phone				VARCHAR(256)		NOT NULL,
+    CONSTRAINT PK_STORAGE PRIMARY KEY (storage_id)
+);
+CREATE TABLE PRODUCT_AVALIABILITY(
+    product_id			INTEGER				NOT NULL REFERENCES PRODUCT,
+    storage_id			INTEGER				NOT NULL REFERENCES STORAGE,
+    quantity			INTEGER				NOT NULL    
+);
+CREATE TABLE SUPPLY(
+    product_id			INTEGER				NOT NULL REFERENCES PRODUCT,
+    storage_id			INTEGER				NOT NULL REFERENCES STORAGE,
+    supply_date			DATE				NOT NULL,
+    quantity			INTEGER				NOT NULL
+);
+CREATE TABLE SELLS_ENTRE(
+    sell_id				INTEGER				NOT NULL REFERENCES SELLS,
+    product_id			INTEGER				NOT NULL REFERENCES PRODUCT,
+    storage_id			INTEGER				NOT NULL REFERENCES STORAGE,
+    product_price		FLOAT				NOT NULL,
+    quantity			INTEGER				NOT NULL
+);
+COMMIT;
