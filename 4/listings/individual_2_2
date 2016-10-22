@@ -1,0 +1,9 @@
+with recursive RR as(
+	select * from TYPE Where   TYPE_ID=1
+	union all
+	select type.* FROM TYPE, RR where TYPE.P_ID=RR.TYPE_ID
+)
+select PRODUCT.* FROM product
+JOIN product_types ON PRODUCT.PRODUCT_ID=PRODUCT_TYPES.product_id
+where type_id in
+(SELECT type_id FROM RR);
