@@ -1,0 +1,44 @@
+CREATE procedure PROC2(
+inflation boolean,
+countLimitation integer,
+priceLimitation integer,
+percents1 integer, 
+percents2 integer
+)
+as
+declare variable currentProduct integer;
+declare variable currentCount integer;
+declare variable currentPrice float;
+begin
+for
+/*Сортировка продуктов по количеству и сумме продаж*/
+SELECT PRODUCT.PRODUCT_ID, COUNT(PRODUCT.PRODUCT_ID) as tCount
+FROM PRODUCT left JOIN sells_entre on PRODUCT.PRODUCT_ID=SELLS_ENTRE.PRODUCT_ID
+left join SELLS ON SELLS.SELL_ID=SELLS_ENTRE.sell_id
+GROUP BY PRODUCT_ID
+ORDER BY tCount DESC, sum(product_price)  DESC
+into currentProduct, currentCount
+do
+begin
+/*Определение текущей цены товара*/
+select price from product where product_id=:currentproduct into :currentPrice;
+/*Если инфляция*/
+if (:inflation) then
+begin
+/*Увеличиваем цены согласно условиям*/
+if (:currentcount>=countLimitation and :currentprice>=priceLimitation) then
+update product set price=price+(price*:percents1/100) where product_id=:currentProduct;
+else
+update product set price=price+(price*:percents2/100) where product_id=:currentProduct;
+end
+else
+begin
+/*Дэ-инфляция*/
+if (:currentcount>=countLimitation and :currentprice>=priceLimitation) then
+update product set price=price-(price*:percents1/100) where product_id=:currentProduct;
+else
+update product set price=price-(price*:percents2/100) where product_id=:currentProduct;
+end
+end
+suspend;
+end

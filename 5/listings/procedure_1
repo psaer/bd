@@ -1,0 +1,43 @@
+CREATE procedure PROC1(
+startDate date,
+finishDate date)
+as
+/*Некоторые переменные для хранения данных*/
+declare variable topuser integer;
+declare variable topproduct integer;
+declare variable counter integer;
+begin
+
+select max(sell_id) from sells
+into counter;
+
+/*Поиск самого популярного продукта за указанный период*/
+SELECT FIRST 1 PRODUCT.PRODUCT_ID
+FROM PRODUCT JOIN sells_entre on PRODUCT.PRODUCT_ID=SELLS_ENTRE.PRODUCT_ID
+JOIN SELLS ON SELLS.SELL_ID=SELLS_ENTRE.sell_id
+where sell_date between :startDate and :finishDate
+GROUP BY PRODUCT_ID
+ORDER BY COUNT(PRODUCT.PRODUCT_ID) DESC, SUM(PRODUCT_PRICE) DESC
+into topproduct;
+
+/*Поиск пользователей с наибольшими покупками*/
+for
+select first 5 my_user.user_id
+from my_user join sells on my_user.user_id=sells.user_id
+join sells_entre on sells_entre.sell_id=sells.sell_id
+where sell_date between :startDate and :finishDate
+group by user_id
+order by sum(product_price ) desc
+into :topuser
+do
+begin
+
+/*Внесение новых записей о покупках(подарках)*/
+:counter=:counter+1;
+insert into sells(sell_id, user_id, sell_date)
+values(:counter, :topuser, current_date);
+insert into sells_entre(sell_id,product_id,storage_id,product_price,quantity)
+values(:counter, :topproduct,1,0,1);
+end
+suspend;
+end
