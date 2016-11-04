@@ -1,0 +1,9 @@
+SQL> set transaction snapshot;
+Commit current transaction (y/n)?n
+Rolling back work.
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           1 
+		   2

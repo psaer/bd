@@ -1,0 +1,26 @@
+SQL> set transaction isolation level snapshot table stability;
+Commit current transaction (y/n)?n
+Rolling back work.
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           1 
+           2 
+
+SQL> UPDATE TEMP_TABLE SET SOMEID=6 WHERE SOMEID=1;
+Statement failed, SQLSTATE = 40001
+deadlock
+-update conflicts with concurrent update
+-concurrent transaction number is 64
+SQL> UPDATE TEMP_TABLE SET SOMEID=6 WHERE SOMEID=1;
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           6 
+           2 

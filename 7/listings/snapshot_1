@@ -1,0 +1,9 @@
+SQL> insert into temp_table values(3);
+SQL> commit;
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           1 
+           2 
+		   3

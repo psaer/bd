@@ -1,0 +1,30 @@
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           1 
+           2 
+
+SQL> UPDATE TEMP_TABLE SET SOMEID=5 WHERE SOMEID=1;
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           5 
+           2 
+
+SQL> COMMIT;
+SQL> UPDATE TEMP_TABLE SET SOMEID=1 WHERE SOMEID=5;
+SQL> COMMIT;
+SQL> select * from temp_table;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           1 
+           2 

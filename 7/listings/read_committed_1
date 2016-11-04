@@ -1,0 +1,12 @@
+SQL> SELECT * FROM TEMP_TABLE;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           5 
+           1 
+           2 
+
+SQL> insert into temp_table values(6);
+SQL> commit;

@@ -1,0 +1,23 @@
+SQL> SELECT * FROM TEMP_TABLE;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           5 
+           1 
+           2 
+		   
+SQL> SET TRANSACTION READ COMMITTED;
+Commit current transaction (y/n)?n
+Rolling back work.
+SQL> SELECT * FROM TEMP_TABLE;
+
+      SOMEID 
+============ 
+           3 
+           4 
+           5 
+           1 
+           2 
+           6 
