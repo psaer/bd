@@ -1,0 +1,11 @@
+create exception ex_modify_user 'This user in other tables!';
+create trigger user_delete_update for my_user
+before delete or update
+as
+begin
+   if(old.user_id in
+   (select user_id from sells
+   union
+   select user_id from review))
+   then exception ex_modify_user;
+end

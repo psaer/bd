@@ -1,0 +1,11 @@
+create trigger supply_inflation_checker for supply
+active before insert
+as
+declare variable infl boolean;
+declare variable percent integer;
+begin
+if(gen_id(inflation_type,0)=1) then
+execute procedure proc4(new.product_id, true,gen_id(inflation_percent,0));
+else if(gen_id(inflation_type,0)=2) then
+execute procedure proc4(new.product_id, false,gen_id(inflation_percent,0));
+end

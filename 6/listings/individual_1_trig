@@ -1,0 +1,17 @@
+create exception ex_modify_type 'Type can not be father of himself.';
+create trigger type_id_checker for TYPE
+active before insert or update
+as
+declare variable temp integer;
+begin
+for
+select * from proc3(new.p_id)
+into :temp
+do
+begin
+if(:temp=new.type_id)
+then exception ex_modify_type;
+end
+if(new.type_id=new.p_id)
+then exception ex_modify_type;
+end

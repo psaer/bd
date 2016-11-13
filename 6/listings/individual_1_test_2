@@ -1,0 +1,1 @@
+update type set p_id=20 where type_id=20;

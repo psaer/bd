@@ -1,0 +1,17 @@
+create procedure proc3(
+    input_type_id integer)
+returns(output_p_id integer)
+as
+begin
+for
+with recursive RR as(
+    select type.* from TYPE Where   TYPE_ID=:input_type_id
+    union all
+    select type.* FROM TYPE, RR where TYPE.TYPE_ID=RR.P_ID
+)
+select first 1024  RR.P_ID from RR into output_p_id
+do
+begin
+suspend;
+end
+end

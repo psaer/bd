@@ -1,0 +1,12 @@
+insert into storage(storage_id, address, phone) 
+			values(55, 'qwerty','12345');
+commit;
+insert into storage(address, phone) 
+			values('qwerty','12345');
+commit;
+insert into storage(storage_id, address, phone) 
+			values(82, 'qwerty','12345');
+commit;
+insert into storage(address, phone) 
+			values('qwerty','12345');
+commit;
