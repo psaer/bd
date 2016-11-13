@@ -1,0 +1,14 @@
+create trigger storage_id_autoinc for storage
+active before insert position 0
+as
+declare variable tmp DECIMAL(18,0);
+begin
+    if(new.storage_id is null) then
+       new.storage_id=gen_id(STORAGE_GEN,1);
+    else
+    begin
+        tmp=gen_id(STORAGE_GEN,0);
+        if(tmp<new.storage_id) then
+            tmp=gen_id(STORAGE_GEN, new.storage_id-tmp);
+    end
+end

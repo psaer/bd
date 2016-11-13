@@ -1,0 +1,4 @@
+insert into type values(20, null,'qwe',1);
+commit;
+insert into type values(21, 20,'qwe',2);
+commit;

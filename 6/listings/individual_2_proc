@@ -1,0 +1,19 @@
+CREATE procedure PROC4(
+prod_id integer,
+inflation boolean,
+percents1 integer
+)
+as
+declare variable currentProduct integer;
+declare variable currentCount integer;
+declare variable currentPrice float;
+begin
+if (:inflation) then
+begin
+update product set price=price+(price*:percents1/100) where product_id=:prod_id;
+end
+else
+begin
+update product set price=price-(price*:percents1/100) where product_id=:prod_id;
+end
+end
